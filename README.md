@@ -3,72 +3,66 @@
 [roc_badge]: https://img.shields.io/endpoint?url=https%3A%2F%2Fpastebin.com%2Fraw%2FcFzuCCd7
 [roc_link]: https://github.com/roc-lang/roc
 
-# Roc platform template for Zig
+# Roc platform template for Odin
 
-A template for building [Roc platforms](https://www.roc-lang.org/platforms) using [Zig](https://ziglang.org).
+A template for building [Roc platforms](https://www.roc-lang.org/platforms) using [Odin](https://odin-lang.org).
 
 ## Requirements
 
-- [Zig](https://ziglang.org/download/) 0.16.0 or later
-- [Roc](https://www.roc-lang.org/) (for bundling)
+- [Odin](https://odin-lang.org/docs/install/) (dev-2026 or later)
+- [Roc](https://www.roc-lang.org/) (for bundling and running examples)
 
 ## Examples
 
-Use the current release bundle as the platform dependency:
+The checked-in examples use the local `platform/main.roc`:
 
 ```roc
-app [main!] { pf: platform "https://github.com/lukewilliamboswell/roc-platform-template-zig/releases/download/1.0.0/AnZoxzoGPtSGQ15EQh6pBeeaHJ7aizP9MQhK81dES3Uq.tar.zst" }
+app [main!] { pf: platform "../platform/main.roc" }
 ```
 
-Run examples with interpreter: `roc examples/<name>.roc`
+Run examples with the interpreter:
 
-Build standalone executable: `roc build examples/<name>.roc`
+```bash
+roc examples/echo.roc
+```
+
+Build a standalone executable:
+
+```bash
+roc build examples/echo.roc
+```
 
 ## Documentation
-
-Platform API docs are published at <https://lukewilliamboswell.github.io/roc-platform-template-zig/>.
 
 Generate docs locally:
 
 ```bash
-zig build docs
+roc docs platform/main.roc
 ```
 
 ## Testing
 
-The checked-in examples use the latest release bundle so they can be copied directly. `zig build test` rewrites temporary copies to use the local `platform/main.roc` before running them.
-
+```bash
+make test
 ```
-$ zig build test
-roc Roc compiler version ...
 
-  check: 12/12 passed
-  run (interpreter): 10/10 passed
-  build+run (compiled): 9/9 passed
-  roc test: 2/2 passed
-
-All 33 tests passed
-```
+This builds the native host library and then runs the `echo.roc` example.
 
 ## Building
 
 ```bash
 # Build for all supported targets (cross-compilation)
-zig build -Doptimize=ReleaseSafe
+make all
 
 # Build for native platform only
-zig build native -Doptimize=ReleaseSafe
+make native
 ```
+
+Cross-compilation requires the appropriate target toolchain support in your Odin/LLVM installation.
 
 ## Regenerating Glue
 
-When the platform API changes (e.g. adding or modifying hosted functions in `platform/main.roc`), regenerate the Zig glue:
-
-```bash
-roc glue <path-to-roc>/src/glue/src/ZigGlue.roc ./src/ ./platform/main.roc
-```
-
-This updates `src/roc_platform_abi.zig` with the ABI types and dispatch table matching the platform's hosted functions.
+When the platform API changes (e.g. adding or modifying hosted functions in `platform/main.roc`), update the ABI declarations in `src/roc_platform_abi.odin` to match the new signatures and types. This project currently keeps the ABI bindings in Odin by hand; there is no Odin glue generator yet.
 
 ## Bundling
 

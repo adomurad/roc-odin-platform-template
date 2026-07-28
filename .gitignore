@@ -17,32 +17,15 @@ app
 *.lib
 *.dylib
 *.so
-*.lib
 *.o
 *.rh
 *.rm
 
-.claude
-
-host/libhost.h
-
-zig-cache/
-zig-out/
-build
-app
-
 .DS_Store
 
-# generated files
-#host/roc/
-host/glue.zig
-host/glueForArch/
-host/types.json
-
-# ingore things that are WIP
+# Ignore things that are WIP
 wip-*
 
-.zig-cache/
 platform/dynhost
 
 # ignore the libapp that is built when making a dynhost
