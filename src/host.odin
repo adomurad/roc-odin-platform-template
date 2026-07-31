@@ -67,7 +67,10 @@ stderr_line_ok :: proc() -> StderrResult {
 }
 
 stderr_line_err :: proc(err: string, roc_host: ^RocHost) -> StderrResult {
-	return StderrResult{payload = StderrResultPayload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
+	return StderrResult {
+		payload = StderrResultPayload{err = roc_str_from_slice(err, roc_host)},
+		tag = .Err,
+	}
 }
 
 stdin_line_ok :: proc(line: RocStr) -> StdinResult {
@@ -75,7 +78,10 @@ stdin_line_ok :: proc(line: RocStr) -> StdinResult {
 }
 
 stdin_line_err :: proc(err: string, roc_host: ^RocHost) -> StdinResult {
-	return StdinResult{payload = StdinResultPayload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
+	return StdinResult {
+		payload = StdinResultPayload{err = roc_str_from_slice(err, roc_host)},
+		tag = .Err,
+	}
 }
 
 stdout_line_ok :: proc() -> StdoutResult {
@@ -83,7 +89,10 @@ stdout_line_ok :: proc() -> StdoutResult {
 }
 
 stdout_line_err :: proc(err: string, roc_host: ^RocHost) -> StdoutResult {
-	return StdoutResult{payload = StdoutResultPayload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
+	return StdoutResult {
+		payload = StdoutResultPayload{err = roc_str_from_slice(err, roc_host)},
+		tag = .Err,
+	}
 }
 
 // -----------------------------------------------------------------------------
