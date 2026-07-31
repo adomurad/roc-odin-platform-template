@@ -595,135 +595,135 @@ RocEnv :: struct {
 // Try types
 // -----------------------------------------------------------------------------
 
-TryType0Tag :: enum u8 {
+StderrResultTag :: enum u8 {
 	Err = 0,
 	Ok  = 1,
 }
 
-TryType0Payload :: struct #raw_union {
+StderrResultPayload :: struct #raw_union {
 	err: RocStr,
 	ok:  struct{},
 }
 
 when size_of(uint) == 8 {
-	TryType0 :: struct #align (8) {
-		payload:  TryType0Payload,
-		tag:      TryType0Tag,
+	StderrResult :: struct #align (8) {
+		payload:  StderrResultPayload,
+		tag:      StderrResultTag,
 		_padding: [7]u8,
 	}
 } else {
-	TryType0 :: struct #align (4) {
+	StderrResult :: struct #align (4) {
 		payload:  [12]u8,
-		tag:      TryType0Tag,
+		tag:      StderrResultTag,
 		_padding: [3]u8,
 	}
 }
 
 when size_of(uint) == 8 {
-	TryType0_payload_err :: proc(self: ^TryType0) -> RocStr {
+	stderr_result_payload_err :: proc(self: ^StderrResult) -> RocStr {
 		return self.payload.err
 	}
 } else {
-	TryType0_payload_err :: proc(self: ^TryType0) -> RocStr {
+	stderr_result_payload_err :: proc(self: ^StderrResult) -> RocStr {
 		ptr := (^RocStr)(&self.payload)
 		return ptr^
 	}
 }
 
-TryType4Tag :: enum u8 {
+StdinResultTag :: enum u8 {
 	Err = 0,
 	Ok  = 1,
 }
 
-TryType4Payload :: struct #raw_union {
+StdinResultPayload :: struct #raw_union {
 	err: RocStr,
 	ok:  RocStr,
 }
 
 when size_of(uint) == 8 {
-	TryType4 :: struct #align (8) {
-		payload:  TryType4Payload,
-		tag:      TryType4Tag,
+	StdinResult :: struct #align (8) {
+		payload:  StdinResultPayload,
+		tag:      StdinResultTag,
 		_padding: [7]u8,
 	}
 } else {
-	TryType4 :: struct #align (4) {
+	StdinResult :: struct #align (4) {
 		payload:  [12]u8,
-		tag:      TryType4Tag,
+		tag:      StdinResultTag,
 		_padding: [3]u8,
 	}
 }
 
 when size_of(uint) == 8 {
-	TryType4_payload_err :: proc(self: ^TryType4) -> RocStr {
+	stdin_result_payload_err :: proc(self: ^StdinResult) -> RocStr {
 		return self.payload.err
 	}
-	TryType4_payload_ok :: proc(self: ^TryType4) -> RocStr {
+	stdin_result_payload_ok :: proc(self: ^StdinResult) -> RocStr {
 		return self.payload.ok
 	}
 } else {
-	TryType4_payload_err :: proc(self: ^TryType4) -> RocStr {
+	stdin_result_payload_err :: proc(self: ^StdinResult) -> RocStr {
 		ptr := (^RocStr)(&self.payload)
 		return ptr^
 	}
-	TryType4_payload_ok :: proc(self: ^TryType4) -> RocStr {
+	stdin_result_payload_ok :: proc(self: ^StdinResult) -> RocStr {
 		ptr := (^RocStr)(&self.payload)
 		return ptr^
 	}
 }
 
-TryType6Tag :: enum u8 {
+StdoutResultTag :: enum u8 {
 	Err = 0,
 	Ok  = 1,
 }
 
-TryType6Payload :: struct #raw_union {
+StdoutResultPayload :: struct #raw_union {
 	err: RocStr,
 	ok:  struct{},
 }
 
 when size_of(uint) == 8 {
-	TryType6 :: struct #align (8) {
-		payload:  TryType6Payload,
-		tag:      TryType6Tag,
+	StdoutResult :: struct #align (8) {
+		payload:  StdoutResultPayload,
+		tag:      StdoutResultTag,
 		_padding: [7]u8,
 	}
 } else {
-	TryType6 :: struct #align (4) {
+	StdoutResult :: struct #align (4) {
 		payload:  [12]u8,
-		tag:      TryType6Tag,
+		tag:      StdoutResultTag,
 		_padding: [3]u8,
 	}
 }
 
 when size_of(uint) == 8 {
-	TryType6_payload_err :: proc(self: ^TryType6) -> RocStr {
+	stdout_result_payload_err :: proc(self: ^StdoutResult) -> RocStr {
 		return self.payload.err
 	}
 } else {
-	TryType6_payload_err :: proc(self: ^TryType6) -> RocStr {
+	stdout_result_payload_err :: proc(self: ^StdoutResult) -> RocStr {
 		ptr := (^RocStr)(&self.payload)
 		return ptr^
 	}
 }
 
-TryType11Tag :: enum u8 {
+I32ErrorResultTag :: enum u8 {
 	Err = 0,
 	Ok  = 1,
 }
 
-TryType11Payload :: struct #raw_union {
+I32ErrorResultPayload :: struct #raw_union {
 	err: i32,
 	ok:  struct{},
 }
 
-TryType11 :: struct #align (4) {
-	payload:  TryType11Payload,
-	tag:      TryType11Tag,
+I32ErrorResult :: struct #align (4) {
+	payload:  I32ErrorResultPayload,
+	tag:      I32ErrorResultTag,
 	_padding: [3]u8,
 }
 
-TryType11_payload_err :: proc(self: ^TryType11) -> i32 {
+i32_error_result_payload_err :: proc(self: ^I32ErrorResult) -> i32 {
 	return self.payload.err
 }
 
@@ -731,61 +731,61 @@ TryType11_payload_err :: proc(self: ^TryType11) -> i32 {
 // Try refcount helpers
 // -----------------------------------------------------------------------------
 
-decref_try_type_0 :: proc(value: ^TryType0, roc_host: ^RocHost) {
+decref_stderr_result :: proc(value: ^StderrResult, roc_host: ^RocHost) {
 	switch value.tag {
 	case .Err:
-		roc_str_decref(TryType0_payload_err(value), roc_host)
+		roc_str_decref(stderr_result_payload_err(value), roc_host)
 	case .Ok:
 	// nothing
 	}
 }
 
-incref_try_type_0 :: proc(value: ^TryType0, amount: int) {
+incref_stderr_result :: proc(value: ^StderrResult, amount: int) {
 	switch value.tag {
 	case .Err:
-		roc_str_incref(TryType0_payload_err(value), amount)
+		roc_str_incref(stderr_result_payload_err(value), amount)
 	case .Ok:
 	// nothing
 	}
 }
 
-decref_try_type_4 :: proc(value: ^TryType4, roc_host: ^RocHost) {
+decref_stdin_result :: proc(value: ^StdinResult, roc_host: ^RocHost) {
 	switch value.tag {
 	case .Err:
-		roc_str_decref(TryType4_payload_err(value), roc_host)
+		roc_str_decref(stdin_result_payload_err(value), roc_host)
 	case .Ok:
-		roc_str_decref(TryType4_payload_ok(value), roc_host)
+		roc_str_decref(stdin_result_payload_ok(value), roc_host)
 	}
 }
 
-incref_try_type_4 :: proc(value: ^TryType4, amount: int) {
+incref_stdin_result :: proc(value: ^StdinResult, amount: int) {
 	switch value.tag {
 	case .Err:
-		roc_str_incref(TryType4_payload_err(value), amount)
+		roc_str_incref(stdin_result_payload_err(value), amount)
 	case .Ok:
-		roc_str_incref(TryType4_payload_ok(value), amount)
+		roc_str_incref(stdin_result_payload_ok(value), amount)
 	}
 }
 
-decref_try_type_6 :: proc(value: ^TryType6, roc_host: ^RocHost) {
+decref_stdout_result :: proc(value: ^StdoutResult, roc_host: ^RocHost) {
 	switch value.tag {
 	case .Err:
-		roc_str_decref(TryType6_payload_err(value), roc_host)
-	case .Ok:
-	// nothing
-	}
-}
-
-incref_try_type_6 :: proc(value: ^TryType6, amount: int) {
-	switch value.tag {
-	case .Err:
-		roc_str_incref(TryType6_payload_err(value), amount)
+		roc_str_decref(stdout_result_payload_err(value), roc_host)
 	case .Ok:
 	// nothing
 	}
 }
 
-decref_try_type_11 :: proc(value: ^TryType11, roc_host: ^RocHost) {
+incref_stdout_result :: proc(value: ^StdoutResult, amount: int) {
+	switch value.tag {
+	case .Err:
+		roc_str_incref(stdout_result_payload_err(value), amount)
+	case .Ok:
+	// nothing
+	}
+}
+
+decref_i32_error_result :: proc(value: ^I32ErrorResult, roc_host: ^RocHost) {
 	_ = roc_host
 	switch value.tag {
 	case .Err:
@@ -793,7 +793,7 @@ decref_try_type_11 :: proc(value: ^TryType11, roc_host: ^RocHost) {
 	}
 }
 
-incref_try_type_11 :: proc(value: ^TryType11, amount: int) {
+incref_i32_error_result :: proc(value: ^I32ErrorResult, amount: int) {
 	_ = amount
 	switch value.tag {
 	case .Err:

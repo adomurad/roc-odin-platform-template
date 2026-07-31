@@ -62,28 +62,28 @@ main :: proc() {
 // Try helpers
 // -----------------------------------------------------------------------------
 
-stderr_line_ok :: proc() -> TryType0 {
-	return TryType0{payload = TryType0Payload{ok = struct{}{}}, tag = .Ok}
+stderr_line_ok :: proc() -> StderrResult {
+	return StderrResult{payload = StderrResultPayload{ok = struct{}{}}, tag = .Ok}
 }
 
-stderr_line_err :: proc(err: string, roc_host: ^RocHost) -> TryType0 {
-	return TryType0{payload = TryType0Payload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
+stderr_line_err :: proc(err: string, roc_host: ^RocHost) -> StderrResult {
+	return StderrResult{payload = StderrResultPayload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
 }
 
-stdin_line_ok :: proc(line: RocStr) -> TryType4 {
-	return TryType4{payload = TryType4Payload{ok = line}, tag = .Ok}
+stdin_line_ok :: proc(line: RocStr) -> StdinResult {
+	return StdinResult{payload = StdinResultPayload{ok = line}, tag = .Ok}
 }
 
-stdin_line_err :: proc(err: string, roc_host: ^RocHost) -> TryType4 {
-	return TryType4{payload = TryType4Payload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
+stdin_line_err :: proc(err: string, roc_host: ^RocHost) -> StdinResult {
+	return StdinResult{payload = StdinResultPayload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
 }
 
-stdout_line_ok :: proc() -> TryType6 {
-	return TryType6{payload = TryType6Payload{ok = struct{}{}}, tag = .Ok}
+stdout_line_ok :: proc() -> StdoutResult {
+	return StdoutResult{payload = StdoutResultPayload{ok = struct{}{}}, tag = .Ok}
 }
 
-stdout_line_err :: proc(err: string, roc_host: ^RocHost) -> TryType6 {
-	return TryType6{payload = TryType6Payload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
+stdout_line_err :: proc(err: string, roc_host: ^RocHost) -> StdoutResult {
+	return StdoutResult{payload = StdoutResultPayload{err = roc_str_from_slice(err, roc_host)}, tag = .Err}
 }
 
 // -----------------------------------------------------------------------------
@@ -91,7 +91,7 @@ stdout_line_err :: proc(err: string, roc_host: ^RocHost) -> TryType6 {
 // -----------------------------------------------------------------------------
 
 @(export)
-roc_stderr_line :: proc "c" (str: RocStr) -> TryType0 {
+roc_stderr_line :: proc "c" (str: RocStr) -> StderrResult {
 	context = runtime.default_context()
 	roc_host := g_roc_host
 	local_str := str
@@ -110,7 +110,7 @@ roc_stderr_line :: proc "c" (str: RocStr) -> TryType0 {
 }
 
 @(export)
-roc_stdin_line :: proc "c" () -> TryType4 {
+roc_stdin_line :: proc "c" () -> StdinResult {
 	context = runtime.default_context()
 	roc_host := g_roc_host
 	env := host_env_from_roc_host(roc_host)
@@ -134,7 +134,7 @@ roc_stdin_line :: proc "c" () -> TryType4 {
 }
 
 @(export)
-roc_stdout_line :: proc "c" (str: RocStr) -> TryType6 {
+roc_stdout_line :: proc "c" (str: RocStr) -> StdoutResult {
 	context = runtime.default_context()
 	roc_host := g_roc_host
 	local_str := str
