@@ -7,6 +7,12 @@
 
 A template for building [Roc platforms](https://www.roc-lang.org/platforms) using [Odin](https://odin-lang.org).
 
+This is mostly based on https://github.com/lukewilliamboswell/roc-platform-template-zig.
+
+I'm new to Odin and to platform development - not sure if this is correct, but with help of an LLM I was able to make it work.
+
+I hope for official odin glue in the future and a tutorial how to start with platforms :)
+
 ## Requirements
 
 - [Odin](https://odin-lang.org/docs/install/) (dev-2026 or later)
@@ -43,7 +49,7 @@ roc docs platform/main.roc
 ## Testing
 
 ```bash
-make test
+./build.sh test
 ```
 
 This builds the native host library and then runs the `echo.roc` example.
@@ -52,10 +58,10 @@ This builds the native host library and then runs the `echo.roc` example.
 
 ```bash
 # Build for all supported targets (cross-compilation)
-make all
+./build.sh all
 
 # Build for native platform only
-make native
+./build.sh native
 ```
 
 Cross-compilation requires the appropriate target toolchain support in your Odin/LLVM installation.
@@ -80,7 +86,6 @@ This creates a `.tar.zst` bundle containing all `.roc` files and prebuilt host l
 | x64win | `platform/targets/x64win/host.lib` |
 | x64musl | `platform/targets/x64musl/libhost.a` |
 | arm64mac | `platform/targets/arm64mac/libhost.a` |
-| arm64win | `platform/targets/arm64win/host.lib` |
 | arm64musl | `platform/targets/arm64musl/libhost.a` |
 
 Linux musl targets include statically linked C runtime files (`crt1.o`, `libc.a`) for standalone executables.
